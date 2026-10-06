@@ -74,18 +74,16 @@ public class TrivialNameConverter {
         IUPACNotationConverter inConv = new IUPACNotationConverter();
         try {
             inConv.makeTrivialName(_node);
-        } catch (GlycanException e) {
-            e.printStackTrace();
+            this.trivialName = inConv.getCoreCode();
+        } catch (Exception ignored) {
         }
-        this.trivialName = inConv.getCoreCode();
     }
 
     public void makeIUPACNotation (Node _node) {
         try {
             ExtendedConverter extConv = new ExtendedConverter();
             this.fullName = extConv.start(_node);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to convert to IUPAC notation");
+        } catch (Exception ignored) {
         }
     }
 
