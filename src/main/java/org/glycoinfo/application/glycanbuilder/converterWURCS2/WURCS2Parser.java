@@ -77,7 +77,20 @@ public class WURCS2Parser implements GlycanParser{
 		str = str.trim();		
 		if(str.contains("\t")) str = str.substring(str.indexOf("\t") + 1);
 		
-		WURCSGraph graph = new WURCSFactory(str).getGraph();
+                WURCSFactory wf;
+		try {
+			wf = new WURCSFactory(str);
+		} catch (Exception e) {
+			if (e.getMessage() != null) {
+				throw new WURCSToGlycanException(e.getMessage(), e);
+			} else {
+				throw new WURCSToGlycanException("Could not parse", e);
+			}
+		}
+
+		// Maybe WURCSFactory.getGraph() can throw an exception too...
+		WURCSGraph graph = wf.getGraph();
+
 		// whatever spelling the MAPs arrived in, hand the conversion the one it recognises
 		this.rewriteMAPs(graph, false);
 

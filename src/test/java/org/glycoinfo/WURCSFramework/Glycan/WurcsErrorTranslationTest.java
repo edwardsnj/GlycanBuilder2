@@ -72,6 +72,22 @@ public class WurcsErrorTranslationTest {
 		}
 	}
 
+	/** The failure names the failure, the sequence, and carries the original underneath. */
+	@Test
+	public void aConversionFailureSpeaksWurcs3() throws Exception {
+		try {
+			//  this one failed in readGlycan in WURCSFactory constructor
+			new WURCS2Parser().readGlycan("WURCS=2.0/4,5,4/[a2122h-1b_1-5][a2112h-1b_1-5][a2122h-1b_1-5_2*NCC/3=O][a1221p-1a_1-5]/1-2-3-2-4/a4-b1_b3-c1_c3-d1_d3-e1",
+				new MassOptions());
+			fail("it converted");
+		} catch (WURCSToGlycanException translated) {
+			assertTrue("the original trace was lost",
+			 		translated.getCause() != null);
+		} catch (Exception raw) {
+			fail("still a raw Exception: "+raw.getClass().getSimpleName());
+		}
+	}
+
 	/** Through the document it is an orderly false, and the document is left as it was. */
 	@Test
 	public void throughTheDocumentItIsAnOrderlyNo() {
@@ -113,5 +129,12 @@ public class WurcsErrorTranslationTest {
 	public void anOrdinaryWurcsStillConverts() throws Exception {
 		assertTrue(new WURCS2Parser().readGlycan(
 				"WURCS=2.0/1,2,1/[a2122h-1b_1-5_2*NCC/3=O]/1-1/a4-b1", new MassOptions()) != null);
+	}
+
+	/** This WURCS would fail in trivial name conversion but this is not an issue. */
+	@Test
+	public void anOrdinaryWurcsStillConverts1() throws Exception {
+		assertTrue(new WURCS2Parser().readGlycan(
+				"WURCS=2.0/6,11,10/[a2122h-1x_1-?_2*NCC/3=O][a2122h-1b_1-5_2*NCC/3=O][a1122h-1b_1-5][a1122h-1a_1-5][a2112h-1b_1-5][Aad21122h-2a_2-6_5*N]/1-2-3-4-2-5-6-4-2-5-6/a4-b1_b4-c1_c3-d1_c6-h1_d2-e1_e4-f1_f6-g2_h2-i1_i4-j1_j6-k2", new MassOptions()) != null);
 	}
 }

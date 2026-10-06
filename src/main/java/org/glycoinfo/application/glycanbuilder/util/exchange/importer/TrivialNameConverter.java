@@ -72,6 +72,7 @@ public class TrivialNameConverter {
 
     private void makeTrivialName (Node _node) {
         IUPACNotationConverter inConv = new IUPACNotationConverter();
+        this.trivialName = null;
         try {
             inConv.makeTrivialName(_node);
             this.trivialName = inConv.getCoreCode();
@@ -80,6 +81,7 @@ public class TrivialNameConverter {
     }
 
     public void makeIUPACNotation (Node _node) {
+        this.fullName = null;
         try {
             ExtendedConverter extConv = new ExtendedConverter();
             this.fullName = extConv.start(_node);
